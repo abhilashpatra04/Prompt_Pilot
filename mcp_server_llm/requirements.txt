@@ -1,0 +1,53 @@
+# Core FastAPI and web framework dependencies
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+
+# Google Cloud and Firebase
+google-cloud-firestore
+google-generativeai
+google-cloud-storage
+
+# AI/ML and model providers
+requests
+openrouter
+gemini
+groq
+
+# Web scraping and search
+duckduckgo-search
+beautifulsoup4
+lxml
+
+# Document processing
+PyPDF2
+python-magic
+pillow
+
+# Vector storage and search
+faiss-cpu
+sentence-transformers
+
+# Cloud storage
+cloudinary
+
+# Data processing
+pandas
+numpy
+
+# Async and concurrency
+asyncio
+aiofiles
+
+# Logging and monitoring
+structlog
+
+# Security
+cryptography
+langchain 
+langchain_openrouter
+langchain_gemini
+langchain_groq
+# Language detection
+langdetect  
