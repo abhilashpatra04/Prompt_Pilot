@@ -56,5 +56,5 @@ if __name__ == "__main__":
 # app = FastAPI()
 # app.include_router(router)
 
-# #set GOOGLE_APPLICATION_CREDENTIALS=C:\Users\abhilahpatra\service-keys\chatbot-53ecb-firebase-adminsdk-fbsvc-f92323769c.json
+# set GOOGLE_APPLICATION_CREDENTIALS=C:\Users\abhilahpatra\service-keys\chatbot-53ecb-firebase-adminsdk-fbsvc-f92323769c.json
 # uvicorn main:app --host 0.0.0.0 --port 8000 --reload

@@ -12,7 +12,6 @@ google-cloud-storage
 # AI/ML and model providers
 requests
 openrouter
-gemini
 groq
 
 # Web scraping and search
@@ -22,7 +21,7 @@ lxml
 
 # Document processing
 PyPDF2
-python-magic
+
 pillow
 
 # Vector storage and search
@@ -45,9 +44,9 @@ structlog
 
 # Security
 cryptography
-langchain 
-langchain_openrouter
-langchain_gemini
-langchain_groq
-# Language detection
-langdetect  
+langchain
+langchain-community
+langchain-google-genai
+langchain-groq
+langchain-text-splitters
+  
