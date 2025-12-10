@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +24,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -31,7 +31,6 @@ import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.MicOff
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SmartToy
@@ -305,7 +304,7 @@ fun ModernTextInput(
                     val placeholderText = when {
                         voiceState == VoiceState.LISTENING -> "🎤 Listening..."
                         voiceState == VoiceState.PROCESSING -> "🔄 Processing speech..."
-                        selectedAgent != null -> "Ask your ${selectedAgent!!.displayName} anything..."
+                        selectedAgent != null -> "Ask your ${selectedAgent?.displayName} anything..."
                         isWebSearchEnabled -> "Search the web in real-time..."
                         else -> "Type or speak your message..."
                     }
@@ -630,7 +629,77 @@ fun VoiceStateIndicator(voiceState: VoiceState) {
     }
 }
 
-// Voice recognition helper function
+//// Voice recognition helper function
+//@Composable
+//fun AttachmentChipsRow(
+//    attachments: List<ChatAttachment>,
+//    onRemove: (ChatAttachment) -> Unit,
+//    onClick: (ChatAttachment) -> Unit
+//) {
+//    if (attachments.isNotEmpty()) {
+//        LazyRow(
+//            horizontalArrangement = Arrangement.spacedBy(8.dp),
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(horizontal = 8.dp, vertical = 4.dp)
+//        ) {
+//            items(attachments) { attachment ->
+//                AttachmentChip(
+//                    attachment = attachment,
+//                    onRemove = { onRemove(attachment) },
+//                    onClick = { onClick(attachment) }
+//                )
+//            }
+//        }
+//    }
+//}
+
+@Composable
+fun AttachmentChip(
+    attachment: ChatAttachment,
+    onRemove: () -> Unit,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color.DarkGray)
+            .border(1.dp, Color.White, RoundedCornerShape(12.dp))
+            .clickable { onClick() }
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Icon(
+                imageVector = if (attachment.type == AttachmentType.IMAGE)
+                    Icons.Default.Image else Icons.Default.PictureAsPdf,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(16.dp)
+            )
+            Text(
+                text = attachment.name,
+                color = Color.White,
+                fontSize = 12.sp,
+                maxLines = 1
+            )
+            IconButton(
+                onClick = onRemove,
+                modifier = Modifier.size(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Remove",
+                    tint = Color.White,
+                    modifier = Modifier.size(12.dp)
+                )
+            }
+        }
+    }
+}
+
 fun startVoiceRecognition(
     context: android.content.Context,
     onStateChange: (VoiceState) -> Unit,

@@ -11,5 +11,8 @@ data class MessageEntity(
     val text: String,
     val sender: String,
     val timestamp: Long,
+    val question: String = "",
+    val answer: String = "",
+    val model: String? = null,
     val attachments: List<ChatAttachment> = emptyList()
 )

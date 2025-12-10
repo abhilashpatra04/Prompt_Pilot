@@ -70,7 +70,7 @@ class ConversationViewModel @Inject constructor(
     val errorState: StateFlow<String?> = _errorState.asStateFlow()
 
     private var stopReceivingResults = false
-    private val _selectedModel = MutableStateFlow(AI_Model.Deepseek)
+    private val _selectedModel = MutableStateFlow(AI_Model.Gemini_img)  // Default to Gemini 2.5 Flash
     val selectedModel: StateFlow<AI_Model> get() = _selectedModel
 
     fun setSelectedModel(model: AI_Model) {
@@ -95,11 +95,8 @@ class ConversationViewModel @Inject constructor(
                 // Load from Room for instant UI
                 val localMessages = messageRepo.fetchMessagesLocal(_currentConversation.value)
                 setMessages(localMessages.toMutableList())
-                // Then sync with Firestore for updates
+                // Then sync with Firestore for updates (don't re-save, just display)
                 messageRepo.fetchMessages(_currentConversation.value).collectLatest { remoteMessages ->
-                    remoteMessages.forEach { message ->
-                        messageRepo.createMessage(message)
-                    }
                     setMessages(remoteMessages.toMutableList())
                 }
             }
@@ -215,11 +212,25 @@ class ConversationViewModel @Inject constructor(
             if (aiReply != null) {
                 // Final update with complete response
                 updateLatestMessageAnswer(aiReply)
+                
+                // Persist the updated message to Room and Firestore
+                val updatedMessage = getMessagesByConversation(_currentConversation.value).lastOrNull()
+                if (updatedMessage != null) {
+                    messageRepo.updateMessage(updatedMessage)
+                }
+                
                 Log.d("PromptPilot", "Message sent successfully: ${aiReply.length} characters")
             } else {
                 // Timeout occurred
                 val timeoutMessage = "Request timed out. Please try with a shorter message or check your connection."
                 updateLatestMessageAnswer(timeoutMessage)
+                
+                // Persist the timeout message
+                val updatedMessage = getMessagesByConversation(_currentConversation.value).lastOrNull()
+                if (updatedMessage != null) {
+                    messageRepo.updateMessage(updatedMessage)
+                }
+                
                 _errorState.value = timeoutMessage
             }
 
@@ -242,6 +253,14 @@ class ConversationViewModel @Inject constructor(
             _errorState.value = errorMessage
             _isStreaming.value = false
             updateLatestMessageAnswer("Sorry, I encountered an error: $errorMessage")
+            
+            // Persist the error message
+            val updatedMessage = getMessagesByConversation(_currentConversation.value).lastOrNull()
+            if (updatedMessage != null) {
+                viewModelScope.launch {
+                    messageRepo.updateMessage(updatedMessage)
+                }
+            }
         }
     }
 
@@ -259,14 +278,21 @@ class ConversationViewModel @Inject constructor(
         }
     }
 
-    // Also update this method to handle proper message ordering
+    // Also update this method to handle proper message ordering and deduplication
     private fun setMessages(messages: MutableList<MessageModel>) {
         val messagesMap: HashMap<String, MutableList<MessageModel>> =
             _messages.value.clone() as HashMap<String, MutableList<MessageModel>>
 
-        // Ensure messages are sorted by timestamp
-        val sortedMessages = messages.sortedBy { it.timestamp }.toMutableList()
-        messagesMap[_currentConversation.value] = sortedMessages
+        // Get existing messages for this conversation
+        val existingMessages = messagesMap[_currentConversation.value] ?: mutableListOf()
+        
+        // Merge: put incoming messages FIRST so distinctBy keeps the newer version
+        // (e.g., updated answer instead of old "Thinking..." placeholder)
+        val mergedMessages = (messages + existingMessages)
+            .distinctBy { it.id }
+            .sortedBy { it.timestamp }
+            .toMutableList()
+        messagesMap[_currentConversation.value] = mergedMessages
         _messages.value = messagesMap
     }
 

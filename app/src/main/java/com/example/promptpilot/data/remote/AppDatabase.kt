@@ -6,7 +6,8 @@ import androidx.room.TypeConverters
 
 @Database(
     entities = [MessageEntity::class, PendingAttachmentEntity::class],
-    version = 2
+    version = 2,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

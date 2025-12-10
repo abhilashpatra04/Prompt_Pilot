@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.promptpilot.data.api.BackendApi
 import com.example.promptpilot.data.api.BackendChatRequest
 import com.example.promptpilot.models.TextCompletionsParam
+import com.google.firebase.BuildConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +27,7 @@ class OpenAIRepositoryImpl @Inject constructor(
 
     companion object {
         private const val TIMEOUT_SECONDS = 120L // 2 minutes timeout
-        private const val BASE_URL = "http://10.196.75.76:8000" // Replace with your actual server URL
+        private const val BASE_URL = "https://promptpilot-backend-o5fj.onrender.com"
     }
 
     override fun textCompletionsWithStream(params: TextCompletionsParam): Flow<String> = flow {
@@ -151,7 +152,30 @@ class OpenAIRepositoryImpl @Inject constructor(
             }
 
             val responseBody = response.body
-            val reader = BufferedReader(InputStreamReader(responseBody.byteStream()))
+            
+            // First, try to parse as direct JSON response (non-streaming)
+            // The backend may return JSON directly instead of SSE format
+            val responseBytes = responseBody.bytes()
+            val responseString = String(responseBytes)
+            Log.d("PromptPilot", "Raw response (first 500 chars): ${responseString.take(500)}")
+            
+            // Check if it's a direct JSON response (not SSE)
+            if (responseString.trim().startsWith("{") && !responseString.contains("data:")) {
+                try {
+                    val jsonResponse = JSONObject(responseString)
+                    if (jsonResponse.has("reply")) {
+                        val reply = jsonResponse.getString("reply")
+                        Log.d("PromptPilot", "Parsed direct JSON reply: ${reply.length} chars")
+                        onChunkReceived(reply)
+                        return@withContext reply
+                    }
+                } catch (e: Exception) {
+                    Log.d("PromptPilot", "Not a direct JSON response, trying SSE parsing: ${e.message}")
+                }
+            }
+            
+            // Fall back to SSE streaming parsing
+            val reader = BufferedReader(InputStreamReader(responseBytes.inputStream()))
 
             var fullResponse = ""
             var line: String?

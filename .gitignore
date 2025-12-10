@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+.env
+/chatbot-53ecb-firebase-adminsdk-fbsvc-bf3f542fc9.json
+

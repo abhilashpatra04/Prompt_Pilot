@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.example.promptpilot.models.AgentType
 import com.example.promptpilot.models.AttachmentType
 import com.example.promptpilot.models.ChatAttachment
 import com.example.promptpilot.models.MessageModel

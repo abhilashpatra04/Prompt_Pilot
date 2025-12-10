@@ -2,14 +2,14 @@ package com.example.promptpilot.models
 
 import java.util.*
 
-enum class AttachmentType { IMAGE, PDF }
-
-data class ChatAttachment(
-    val name: String = "",
-    val url: String = "",
-    val type: AttachmentType = AttachmentType.IMAGE,
-    val useAsContext: Boolean = true
-)
+//enum class AttachmentType { IMAGE, PDF }
+//
+//data class ChatAttachment(
+//    val name: String = "",
+//    val url: String = "",
+//    val type: AttachmentType = AttachmentType.IMAGE,
+//    val useAsContext: Boolean = true
+//)
 
 data class MessageModel (
     var id: String = "",
