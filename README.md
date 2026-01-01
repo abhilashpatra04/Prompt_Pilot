@@ -223,16 +223,6 @@ See the code of conduct and contributing docs (if present).
 
 ---
 
-## What's next / Integration checklist
-
-- [ ] Ensure backend endpoints match the frontend expectations.
-- [ ] Add sample prompts and fixtures for development.
-- [ ] Add streaming UI for token-by-token rendering (if backend supports streaming).
-- [ ] Set up CI for automated tests and linting.
-- [ ] Deploy backend and frontend to staging for integration tests.
-
----
-
 ## Useful links
 
 - Backend repository (API & business logic): [Backend_promptpilot](https://github.com/abhilashpatra04/Backend_promptpilot.git)
