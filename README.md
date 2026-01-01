@@ -47,13 +47,11 @@ Simple component diagram (text/mermaid):
 
 ```mermaid
 flowchart LR
-  A[User / Browser] -->|HTTPS| B(Frontend - Prompt_Pilot)
-  B -->|API calls (JSON)| C[Backend - Backend_promptpilot]
+  A[User / Browser] -->|HTTPS| B[Frontend: Prompt_Pilot]
+  B -->|API calls (JSON)| C[Backend: Backend_promptpilot]
   C -->|LLM API / External Services| D[(LLM Provider)]
   C -->|DB queries| E[(Database)]
-  note right of C
-    Backend repository:\n[Backend_promptpilot](https://github.com/abhilashpatra04/Backend_promptpilot.git)
-  end
+  note right of C: Backend repository: https://github.com/abhilashpatra04/Backend_promptpilot.git
 ```
 
 Sequence diagram describing a typical "generate response" flow:
