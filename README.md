@@ -240,13 +240,8 @@ See the code of conduct and contributing docs (if present).
 
 ## License
 
-Specify your license here (e.g., MIT). If you haven't chosen one yet, consider adding a LICENSE file.
+
 
 ---
 
-If you'd like, I can:
-- generate a starter `src/services/api.ts` configured for the backend URL,
-- produce a `.env.example` filled with recommended variable names,
-- or create a diagram image (SVG) and add it to the repo.
 
-Tell me which next step you prefer.
