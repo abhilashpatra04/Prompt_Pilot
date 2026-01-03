@@ -2,7 +2,7 @@
 
 A clean, documented README for the Prompt_Pilot frontend repository. This README describes the overall structure, development flow, and how the frontend communicates with its backend: [Backend_promptpilot](https://github.com/abhilashpatra04/Backend_promptpilot.git).
 
-> NOTE: This repository is the frontend for the Prompt_Pilot system. The backend lives in the linked repository above and provides the API, authentication, and prompt-processing logic.
+> NOTE: This repository is the frontend for the Prompt_Pilot Android App. The backend lives in the linked repository above and provides the API, authentication, and prompt-processing logic.
 
 ---
 ## Live Demo / Deployed Application
@@ -32,7 +32,7 @@ This link contains the live/deployed version of the frontend application integra
 
 ## Project overview
 
-Prompt_Pilot is the frontend application that allows users to create, edit, and run prompts, view results, and manage prompt templates and histories. The frontend handles UI, client-side validation, state management, and communicates with the backend service which runs the core prompt processing, LLM orchestration, user/tenant management, and persistence.
+Prompt_Pilot is the frontend Android Application that allows users to create, edit, and run prompts, view results, and manage prompt templates and histories of coversations. The frontend handles UI, client-side validation, state management, and communicates with the backend service which runs the core prompt processing, LLM orchestration, user/tenant management, and persistence.
 
 Backend repository: [Backend_promptpilot](https://github.com/abhilashpatra04/Backend_promptpilot.git)
 
@@ -78,30 +78,6 @@ sequenceDiagram
 ```
 
 (If the backend supports streaming, the frontend should subscribe to websockets/SSE or HTTP streaming endpoints and render tokens as they arrive.)
-
----
-
-## Folder structure (recommended)
-
-Below is a recommended structure for the frontend repository. Adjust to your framework (React, Next.js, Vue, Svelte, etc.):
-
-- public/                # static assets
-- src/
-  - components/          # UI components (Buttons, Inputs, Modals)
-  - pages/ or routes/     # route components (PromptEditor, Dashboard)
-  - services/
-    - api.ts              # thin HTTP client to backend (axios/fetch wrapper)
-    - auth.ts             # auth helpers
-  - hooks/                # custom hooks (usePrompt, useAuth)
-  - context/              # React contexts (AuthContext, ThemeContext)
-  - styles/               # css / tailwind config
-  - utils/                # helpers (formatting, validators)
-  - types/                # TypeScript interfaces
-- .env.example            # example environment variables
-- package.json
-- README.md
-
----
 
 ## Local development setup
 
