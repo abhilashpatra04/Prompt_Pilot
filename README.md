@@ -108,23 +108,6 @@ sequenceDiagram
 
 ---
 
-## Environment variables
-
-Create `.env` (or `.env.local`) in the frontend project root. Example variables:
-
-- REACT_APP_API_BASE_URL=http://localhost:5000/api
-- REACT_APP_AUTH_STRATEGY=token
-- REACT_APP_OAUTH_CLIENT_ID=your_oauth_client_id  # if used
-- NODE_ENV=development
-
-If using Next.js, use NEXT_PUBLIC_BACKEND_URL:
-
-- NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
-
-Important: the backend repository [Backend_promptpilot](https://github.com/abhilashpatra04/Backend_promptpilot.git) contains the server-specific environment variables (API keys, DB connection strings, etc.). Do not expose secrets in the frontend.
-
----
-
 ## API contract (example / suggested endpoints)
 
 The exact endpoints must be synchronized with [Backend_promptpilot](https://github.com/abhilashpatra04/Backend_promptpilot.git). Below are suggested/common endpoints the frontend will call:
@@ -166,32 +149,6 @@ curl -X POST "http://localhost:5000/api/prompts/123/run" \
   -H "Content-Type: application/json" \
   -d '{"variables": {"name": "Ada"}}'
 ```
-
----
-
-## Deployment notes
-
-- Build the frontend (e.g., `npm run build`) and serve with a static hosting provider (Vercel, Netlify) or a simple static server.
-- Ensure the frontend's production env variable (e.g., NEXT_PUBLIC_BACKEND_URL) points to the deployed backend API URL (the backend repo should be deployed to a reachable URL).
-- Configure CORS on the backend to allow requests from your frontend origin.
-- Use secure storage for API keys and secrets on the backend; do not embed them in the frontend.
-
----
-
-## Testing
-
-- Unit tests: run `npm test` (or framework-specific command)
-- E2E tests: configure Playwright / Cypress to point at a test backend or a staging environment.
-- Linting: run `npm run lint` to ensure code style.
-
----
-
-## Troubleshooting
-
-- 401 Unauthorized: confirm the token is correctly stored and sent (Authorization header).
-- CORS errors: ensure backend CORS settings include frontend origin.
-- Backend not found: confirm backend is running and REACT_APP_API_BASE_URL / NEXT_PUBLIC_BACKEND_URL points to the right host/port.
-- Streaming not working: confirm backend supports streaming and that you use SSE/Websocket correctly.
 
 ---
 
